@@ -518,6 +518,10 @@ func MakePrecompile(metadata *bind.MetaData, implementer interface{}) (addr, *Pr
 }
 
 func Precompiles() map[addr]ArbosPrecompile {
+	hex := func(s string) addr {
+		return common.HexToAddress(s)
+	}
+	
 	contracts := make(map[addr]ArbosPrecompile)
 
 	insert := func(address addr, impl ArbosPrecompile) *Precompile {
@@ -525,6 +529,7 @@ func Precompiles() map[addr]ArbosPrecompile {
 		return impl.Precompile()
 	}
 
+	insert(MakePrecompile(pgen.ArbDecryptionMetaData, &ArbDecryption{Address: hex("94")}))
 	insert(MakePrecompile(pgen.ArbInfoMetaData, &ArbInfo{Address: types.ArbInfoAddress}))
 	insert(MakePrecompile(pgen.ArbAddressTableMetaData, &ArbAddressTable{Address: types.ArbAddressTableAddress}))
 	insert(MakePrecompile(pgen.ArbBLSMetaData, &ArbBLS{Address: types.ArbBLSAddress}))
